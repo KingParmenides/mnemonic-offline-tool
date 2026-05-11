@@ -139981,8 +139981,19 @@ var jsbtc=function(A){var i={};function e(t){if(i[t])return i[t].exports;var I=i
             try {
 
 
-                let n = parseInt($("#share-threshold")[0].value);
-                let m = parseInt($("#share-total")[0].value);
+                let thresholdValue = $("#share-threshold")[0].value.trim();
+                let totalValue = $("#share-total")[0].value.trim();
+                if (!/^\d+$/.test(thresholdValue) || !/^\d+$/.test(totalValue)) {
+                    await run_task(type_text, "#calc-status", "Threshold and total shares must be whole numbers", "text-red");
+                    return;
+                }
+
+                let n = parseInt(thresholdValue, 10);
+                let m = parseInt(totalValue, 10);
+                if (n < 2) {
+                    await run_task(type_text, "#calc-status", "Minimum threshold is 2 shares", "text-red");
+                    return;
+                }
                 if (m > 15) {
                     await run_task(type_text, "#calc-status", "This tool limited to 15 total shares", "text-red");
                     return;
